@@ -6,14 +6,21 @@ import win32api
 import win32con
 import win32gui
 import win32process
+import GetBaseAddr as BA
 
 PROCESS_NAME = 'retroarch.exe'
-RING_ADDRESS_POINTER = 0x161D0E80
+BASE_ADDRESS_DLL = BA.GetRetroArc_DLL_Address() 
+RING_ADDRESS_OFFSET = 2887296
+MILLS_ADDRESS_OFFSET = 2887299
+LEVEL_ADDRESS_OFFSET = 2887268
+
+RING_ADDRESS_POINTER =  BASE_ADDRESS_DLL+RING_ADDRESS_OFFSET
+MILLS_ADDRESS_POINTER = BASE_ADDRESS_DLL+MILLS_ADDRESS_OFFSET
+LEVEL_TICK_POINTER = BASE_ADDRESS_DLL+LEVEL_ADDRESS_OFFSET
+AMMOUNT_TIME = 3 #secs
+
 # SECS_ADDRESS_POINTER = 0x16380E85
 # MIN_ADDRESS_POINTER = 0x16380E82
-MILLS_ADDRESS_POINTER = 0x161D0E83
-LEVEL_TICK_POINTER = 0x161D0E64
-AMMOUNT_TIME = 10 #secs
 
 # Overlay Init ---------------
 pygame.init()
@@ -81,7 +88,7 @@ levelStartFlagSet = False
 
 rings = process.read(rings_pointer)
 pre_value_rings = rings
-print(rings)
+print("Rings: " + str(rings))
 
 # Game Logic ----------
 def resetlevel():
@@ -115,12 +122,8 @@ class TimeLeft:
     
     def tick_time(self):
         #Level Start
-        # start_range = range(1, 1000) AND !levelStartFlagSet
         if process.read(level_tick_pointer) == 1: 
             levelStart()
-        # else:
-        #     levelStartFlagSet = true
-        # print(process.read(level_tick_pointer))
         # Time Left Tick
         if gameTimeTickInMills() != self.pre_game_time_mills:
             self.ammount_left = (time.time() - self.last_reset_time)
@@ -160,10 +163,10 @@ while True:
 
     font = pygame.font.SysFont(None, 50)
     # img = font.render("Time Left: " + str(t), True, white_colour)
-    screen.blit(render("Time Left: " + str(t), font), (880, 90))
+    screen.blit(render("Time Left: " + str(t), font), (860, 90))
 
     # pygame.display.update()
-    time.sleep(0.02) # magic number to sync the in-game tick
+    time.sleep(0.02) # magic number to sync with the MILLS_ADDRESS update speed
     pygame.display.flip()
 
 #65536 //vlaue when nothing is happening

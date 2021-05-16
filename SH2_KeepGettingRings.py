@@ -8,6 +8,13 @@ import win32gui
 import win32process
 import GetBaseAddr as BA
 
+# -----------------------------------
+
+AMMOUNT_TIME = 5.00 #secs
+
+# -----------------------------------
+
+
 PROCESS_NAME = 'retroarch.exe'
 BASE_ADDRESS_DLL = BA.GetRetroArc_DLL_Address() 
 RING_ADDRESS_OFFSET = 2887296
@@ -17,7 +24,7 @@ LEVEL_ADDRESS_OFFSET = 2887268
 RING_ADDRESS_POINTER =  BASE_ADDRESS_DLL+RING_ADDRESS_OFFSET
 MILLS_ADDRESS_POINTER = BASE_ADDRESS_DLL+MILLS_ADDRESS_OFFSET
 LEVEL_TICK_POINTER = BASE_ADDRESS_DLL+LEVEL_ADDRESS_OFFSET
-AMMOUNT_TIME = 3 #secs
+
 
 # SECS_ADDRESS_POINTER = 0x16380E85
 # MIN_ADDRESS_POINTER = 0x16380E82
@@ -80,8 +87,6 @@ process = rwm.get_process_by_name(PROCESS_NAME)
 
 process.open()
 rings_pointer = process.get_pointer(RING_ADDRESS_POINTER)
-# sec_pointer = process.get_pointer(SECS_ADDRESS_POINTER)
-# min_pointer = process.get_pointer(MIN_ADDRESS_POINTER)
 mills_pointer = process.get_pointer(MILLS_ADDRESS_POINTER)
 level_tick_pointer = process.get_pointer(LEVEL_TICK_POINTER)
 levelStartFlagSet = False
@@ -91,20 +96,15 @@ pre_value_rings = rings
 print("Rings: " + str(rings))
 
 # Game Logic ----------
-def resetlevel():
-    time.sleep(0.2)
+def resetlevel():    
     pydirectinput.press('f4')
+    time.sleep(0.2)
     print("Reset Level")
 
 def levelStart():
     pydirectinput.press('f2')
     levelStartFlagSet = True
     print("Level Start")
-
-# def gameTimeTick():    
-#     g_min = process.read(sec_pointer)
-#     g_sec = process.read(min_pointer)
-#     return g_min + g_sec
 
 def gameTimeTickInMills():
     return process.read(mills_pointer)
@@ -136,6 +136,8 @@ class TimeLeft:
         self.pre_game_time_mills = gameTimeTickInMills()
         return self.ammount_left
 
+
+
 time_left = 0.0
 time_tracker = TimeLeft()
 while True:
@@ -157,15 +159,13 @@ while True:
     preTime_left = time_left
     time_left = time_tracker.tick_time()
 
-    t = 0.0
+    t = AMMOUNT_TIME
     if preTime_left != time_left:
         t = round(AMMOUNT_TIME - time_left, 1)
 
     font = pygame.font.SysFont(None, 50)
-    # img = font.render("Time Left: " + str(t), True, white_colour)
-    screen.blit(render("Time Left: " + str(t), font), (860, 90))
+    screen.blit(render("Time Left: " + str(t), font), (850, 90))
 
-    # pygame.display.update()
     time.sleep(0.02) # magic number to sync with the MILLS_ADDRESS update speed
     pygame.display.flip()
 

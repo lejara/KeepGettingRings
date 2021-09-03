@@ -15,5 +15,5 @@ Makes it so you have to keep getting rings in Sonic The Hedgehog 2. If not the l
 6. Drag the overlay window on top the emulator
 7. Have Fun!
 
-Version of ROM and Core is very important! Since the script targets specific memory addresses in order for it to work!
+Version number of ROM and Core are very important! Since the script targets specific memory addresses in order for it to work!
 

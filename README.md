@@ -5,7 +5,7 @@ Makes it so you have to keep getting rings in Sonic The Hedgehog 2. If not the l
 ![](KeepGettingRings_Demo.gif)
 
 
-###How to Run
+## How to Run
 
 1. Download [RetroArch Emulator](https://www.retroarch.com/) 1.9.1 
 2. Load core with ```Genesis Plus Gx (v1.7.4 a110a05)```

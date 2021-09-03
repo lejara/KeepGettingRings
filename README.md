@@ -9,7 +9,7 @@ How to Run
 2. Load core with ```Genesis Plus Gx (v1.7.4 a110a05)```
 3. Load ROM ```Sonic The Hedgehog 2 (World) (Rev B)```
 4. Install dependencies ```pip install -r requirements.txt```
-5. Run Script ```Python SH2_KeepGettingRings.py```
+5. Run Script ```python SH2_KeepGettingRings.py```
 6. Drag the overlay window on top the emulator
 7. Have Fun!
 

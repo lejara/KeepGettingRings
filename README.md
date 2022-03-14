@@ -1,6 +1,6 @@
 # KeepGettingRings
 
-Makes it so you have to keep getting rings in Sonic The Hedgehog 2. If not the level resets!
+Makes it so you have to keep getting rings in Sonic The Hedgehog 2. If not the level resets
 
 ![](KeepGettingRings_Demo.gif)
 
